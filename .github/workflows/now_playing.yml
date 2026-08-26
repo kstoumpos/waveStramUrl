@@ -2,8 +2,8 @@ name: Update Now Playing Song
 
 on:
   schedule:
-    - cron: '*/5 * * * *'  # Εκτελείται κάθε 5 λεπτά
-  workflow_dispatch:        # Επιτρέπει χειροκίνητο Run από το GitHub
+    - cron: '*/5 * * * *'
+  workflow_dispatch:
 
 permissions:
   contents: write
@@ -13,12 +13,17 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout repository
-        uses: actions/checkout@v4
+        uses: actions/checkout@v5
 
       - name: Set up Python
-        uses: actions/setup-python@v5
+        uses: actions/setup-python@v6
         with:
           python-version: '3.x'
+
+      - name: Install FFmpeg
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y ffmpeg
 
       - name: Install dependencies
         run: |
