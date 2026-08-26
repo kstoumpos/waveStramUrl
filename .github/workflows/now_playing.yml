@@ -1,1 +1,41 @@
+name: Update Now Playing Song
 
+on:
+  schedule:
+    - cron: '*/5 * * * *'  # Εκτελείται κάθε 5 λεπτά
+  workflow_dispatch:        # Επιτρέπει χειροκίνητο Run από το GitHub
+
+permissions:
+  contents: write
+
+jobs:
+  recognize:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.x'
+
+      - name: Install dependencies
+        run: |
+          pip install requests acrcloud
+
+      - name: Run Song Recognition
+        env:
+          WAVE_STREAM_URL: ${{ secrets.WAVE_STREAM_URL }}
+          ACR_HOST: ${{ secrets.ACR_HOST }}
+          ACR_ACCESS_KEY: ${{ secrets.ACR_ACCESS_KEY }}
+          ACR_ACCESS_SECRET: ${{ secrets.ACR_ACCESS_SECRET }}
+        run: |
+          python recognize.py
+
+      - name: Commit and Push changes
+        run: |
+          git config --global user.name "github-actions[bot]"
+          git config --global user.email "github-actions[bot]@users.noreply.github.com"
+          git add now_playing.json
+          git diff --quiet && git diff --staged --quiet || (git commit -m "Auto-update now playing song [skip ci]" && git push)
