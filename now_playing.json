@@ -1,9 +1,8 @@
 {
-  "title": "Hey Joe",
-  "artist": "Carson",
-  "album": "On the Air / Blown",
-  "spotify_id": "6ygHwvfnRguo0TjMyK2yXo",
-  "score": 100,
-  "timestamp": 1788743084,
-  "status": "playing"
+  "title": "Wave Radio",
+  "artist": "Live Stream",
+  "album": "",
+  "spotify_id": "",
+  "timestamp": 1788760968,
+  "status": "idle"
 }
